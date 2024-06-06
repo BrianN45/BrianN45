@@ -578,6 +578,9 @@
       const last = getCookie('welcome');
 
       alert('Welcome back to my website! Your last visit was on ' + last)
+
+      // Set new last visit
+      setCookie('welcome', Date(), 365);
     }
   </script>
 
