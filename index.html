@@ -40,6 +40,10 @@
         src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
         crossorigin="anonymous"></script>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
@@ -108,8 +112,7 @@
               </div>
             </div>
             <p>
-              Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
-              Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis culpa magni laudantium dolores.
+              From a young age, I was fascinated by the world of technology and computers. It was around 8th grade when I first dabbled in programming, and I instantly fell in love with it. The idea of being able to create something from scratch using just lines of code was incredibly exciting to me.
             </p>
           </div>
         </div>
@@ -348,62 +351,88 @@
             </script>
 
             <div id="typewriter" onclick="typewriterEffect()">Click to show a typewriter effect</div>
-            <script>
-              var typeShown = false;
-              var typing = false;
-              var string1 = "Click to show a typewriter effect";
-              var string2 = "Cats, with their enigmatic grace and independent spirits, captivate the hearts of millions worldwide. From their sleek fur to their mesmerizing gaze, they exude an aura of mystery and elegance. Cats possess a natural agility that allows them to move with unparalleled grace, whether prowling through tall grass or leaping effortlessly onto high perches. Despite their reputation for aloofness, they form deep bonds with their human companions, offering companionship and affection in their own unique way. With their innate curiosity and playful demeanor, cats enrich our lives, bringing joy and warmth to our homes with their gentle purrs and soft cuddles. - Generated with ChatGPT";
-
-              async function typewriterEffect() {
-                if (!typing) {
-                  typing = true;
-
-                  if (typeShown) {
-                      for (let i = 0; i < string1.length + 1; i++) {
-                        $("#typewriter").html(string1.substring(0, i));
-                        await new Promise(r => setTimeout(r, 10));
-                      }
-                    typeShown = false;
-                  }
-                  else {
-                    for (let i = 0; i < string2.length + 1; i++) {
-                      $("#typewriter").html(string2.substring(0, i));
-                      await new Promise(r => setTimeout(r, 10));
-                    }
-                    typeShown = true;
-                  }
-
-                  typing = false;
-                }
-              }
-            </script>
           </div>
 
           <div class="col-lg-5">
             <h2>APIs</h2>
 
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>A108 Adam Street, New York, NY 535022</p>
-              </div>
+            <div>
+              <h4>Random Joke</h4>
+              <h6>Disclaimer: Jokes are from JokeAPI</h6>
+              <p id="joke"></p>
+            </div>
 
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>info@example.com</p>
-              </div>
+            <div>
+              <h4>Cat Images with React</h4>
+              <h6>Disclaimer: Images from cataas API, click on the image to change it</h6>
 
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
-              </div>
+              <div id="cat"></div>
             </div>
           </div>
 
       </div>
+
+      <script type="text/babel">
+        var typeShown = false;
+        var typing = false;
+        var string1 = "Click to show a typewriter effect";
+        var string2 = "Cats, with their enigmatic grace and independent spirits, captivate the hearts of millions worldwide. From their sleek fur to their mesmerizing gaze, they exude an aura of mystery and elegance. Cats possess a natural agility that allows them to move with unparalleled grace, whether prowling through tall grass or leaping effortlessly onto high perches. Despite their reputation for aloofness, they form deep bonds with their human companions, offering companionship and affection in their own unique way. With their innate curiosity and playful demeanor, cats enrich our lives, bringing joy and warmth to our homes with their gentle purrs and soft cuddles. - Generated with ChatGPT";
+
+        async function typewriterEffect() {
+          if (!typing) {
+            typing = true;
+
+            if (typeShown) {
+                for (let i = 0; i < string1.length + 1; i++) {
+                  $("#typewriter").html(string1.substring(0, i));
+                  await new Promise(r => setTimeout(r, 10));
+                }
+              typeShown = false;
+            }
+            else {
+              for (let i = 0; i < string2.length + 1; i++) {
+                $("#typewriter").html(string2.substring(0, i));
+                await new Promise(r => setTimeout(r, 10));
+              }
+              typeShown = true;
+            }
+
+            typing = false;
+          }
+        }
+
+        async function joke() {
+          const response = await fetch("https://v2.jokeapi.dev/joke/Any");
+          const result = await response.json();
+          $("#joke").html(result.joke); 
+        }
+
+        joke();
+        setInterval(joke, 6000);
+
+        // React
+
+        async function getCat() {
+          const catResource = "https://cataas.com/cat?json=true";
+          const response = await fetch(catResource);
+          const result = await response.json();
+
+          $('#catimg').attr('src', "https://cataas.com/cat/" + result._id + ".png");
+        }
+
+        function Cat() {
+            return React.createElement('img', 
+              {
+                id: 'catimg',
+                src: 'https://pbs.twimg.com/media/GPaNa9Za0AMTx4Z?format=jpg&name=large',
+                onClick: getCat,
+                width: '300px'
+              });
+        }
+
+        ReactDOM.createRoot(document.getElementById('cat')).render(<Cat />);
+
+      </script>
     </section><!-- End Miscellaneous Section -->
 
     <!-- ======= Contact Section ======= -->
@@ -512,6 +541,45 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Cookie functions taken from W3Schools -->
+  <script>
+    function setCookie(cname, cvalue, exdays) {
+      const d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      let expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }    
+
+    function getCookie(cname) {
+      let name = cname + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    // First visit
+    if (getCookie('welcome') == '') {
+      setCookie('welcome', Date(), 365);
+
+      alert('Welcome to your first visit to my website!');
+    }
+    // Already visited
+    else {
+      const last = getCookie('welcome');
+
+      alert('Welcome back to my website! Your last visit was on ' + Date().toLocaleString())
+    }
+  </script>
 
 </body>
 
