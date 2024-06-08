@@ -401,7 +401,7 @@
           const response = await fetch("https://v2.jokeapi.dev/joke/Any");
           const result = await response.json();
           const joke = result.joke || `${result.setup} \n\n${result.delivery}`
-          $("#joke").html(result.joke); 
+          $("#joke").html(joke); 
         }
 
 
